@@ -1,0 +1,181 @@
+spec: "1.1"
+devices:
+  device 1:
+    eom:
+      ASRL INSTR:
+        q: "\r\n"
+        r: "\n"
+      USB INSTR:
+        q: "\n"
+        r: "\n"
+      TCPIP INSTR:
+        q: "\n"
+        r: "\n"
+      GPIB INSTR:
+        q: "\n"
+        r: "\n"
+    dialogues:
+      - q: "*IDN?"
+        r: "SCPI,MOCK USB,VERSION_1.0"
+      - q: "*RST"
+        r: "VNA RESET"
+      - q: "*SENS:CORR:COLL:OPEN"
+        r: "OPEN CALIBRATION"
+      - q: "FREQ:START 1GHz"
+        r: "START FREQUENCY SET TO 1GHz"
+      - q: "FREQ:STOP 2GHz"
+        r: "STOP FREQUENCY SET TO 2GHz"
+      - q: "FREQ:STEP 1MHz"
+        r: "FREQUENCY STEP SET TO 1MHz"
+      - q: "FREQ:POINTS 100"
+        r: "NUMBER OF POINTS SET TO 100"
+      - q: "CALC:PAR:DEF S11"
+        r: "MEASUREMENT PARAMETER SET TO S11"
+      - q: "BAND 10kHz"
+        r: "IF BANDWIDTH SET TO 10kHz"
+      - q: "SENSe1:AVERage:COUNt 10"
+        r: "NUMBER OF AVERAGES SET TO 10"
+      - q: "CALC:FORM:STANdard:TYPE SHORT"
+        r: "SHORT STANDARD DEFINED"
+      - q: "CALC:FORM:STANdard:MEAS SHORT"
+        r: "SHORT STANDARD MEASURED"
+      - q: "CALC:FORM:STANdard:TYPE OPEN"
+        r: "OPEN STANDARD DEFINED"
+      - q: "CALC:FORM:STANdard:MEAS OPEN"
+        r: "OPEN STANDARD MEASURED"
+      - q: "CALC:FORM:STANdard:TYPE LOAD"
+        r: "LOAD STANDARD DEFINED"
+      - q: "CALC:FORM:STANdard:MEAS LOAD"
+        r: "LOAD STANDARD MEASURED"
+      - q: "CALC:FORM:STANdard:TYPE THRU"
+        r: "THRU STANDARD DEFINED"
+      - q: "CALC:FORM:STANdard:MEAS THRU"
+        r: "THRU STANDARD MEASURED"
+      - q: "CALC:FORM:FILE:SAVE 'calibration_data.s2p'"
+        r: "CALIBRATION DATA SAVED"
+      - q: "CALC:FORM:FILE:LOAD 'calibration_data.s2p'"
+        r: "CALIBRATION DATA LOADED"
+    error:
+      status_register:
+        - q: "*ESR?"
+          command_error: 32
+          query_error: 4
+    properties:
+      voltage:
+        default: 1.0
+        getter:
+          q: ":VOLT:IMM:AMPL?"
+          r: "{:+.8E}"
+        setter:
+          q: ":VOLT:IMM:AMPL {:.3f}"
+        specs:
+          min: 1
+          max: 6
+          type: float
+      current:
+        default: 1.0
+        getter:
+          q: ":CURR:IMM:AMPL?"
+          r: "{:+.8E}"
+        setter:
+          q: ":CURR:IMM:AMPL {:.3f}"
+        specs:
+          min: 1
+          max: 6
+          type: float
+      rail:
+        default: P6V
+        getter:
+          q: "INST?"
+          r: "{:s}"
+        setter:
+          q: "INST {:s}"
+        specs:
+            valid: ["P6V", "P25V", "N25V"]
+            type: str
+      output_enabled:
+        default: 0
+        getter:
+          q: "OUTP?"
+          r: "{:d}"
+        setter:
+          q: "OUTP {:d}"
+        specs:
+          valid: [0, 1]
+          type: int
+  device 2:
+    eom:
+      ASRL INSTR:
+        q: "\r\n"
+        r: "\n"
+      USB INSTR:
+        q: "\n"
+        r: "\n"
+      TCPIP INSTR:
+        q: "\n"
+        r: "\n"
+      GPIB INSTR:
+        q: "\n"
+        r: "\n"
+    dialogues:
+      - q: "*IDN?"
+        r: "SCPI,MOCK LAN,VERSION_1.0"
+      - q: "*RST"
+        r: "DEVICE RESET"
+      - q: "FREQ:START 1GHz"
+        r: "START FREQUENCY SET TO 1GHz"
+      - q: "FREQ:STOP 2GHz"
+        r: "STOP FREQUENCY SET TO 2GHz"
+      - q: "FREQ:STEP 1MHz"
+        r: "FREQUENCY STEP SET TO 1MHz"
+      - q: "FREQ:POINTS 100"
+        r: "NUMBER OF POINTS SET TO 100"
+      - q: "CALC:PAR:DEF S21"
+        r: "MEASUREMENT PARAMETER SET TO S21"
+      - q: "BAND 10kHz"
+        r: "IF BANDWIDTH SET TO 10kHz"
+      - q: "SENSe1:AVERage:COUNt 10"
+        r: "NUMBER OF AVERAGES SET TO 10"
+      - q: "CALC:FORM:STANdard:TYPE SHORT"
+        r: "SHORT STANDARD DEFINED"
+      - q: "CALC:FORM:STANdard:MEAS SHORT"
+        r: "SHORT STANDARD MEASURED"
+      - q: "CALC:FORM:STANdard:TYPE OPEN"
+        r: "OPEN STANDARD DEFINED"
+      - q: "CALC:FORM:STANdard:MEAS OPEN"
+        r: "OPEN STANDARD MEASURED"
+      - q: "CALC:FORM:STANdard:TYPE LOAD"
+        r: "LOAD STANDARD DEFINED"
+      - q: "CALC:FORM:STANdard:MEAS LOAD"
+        r: "LOAD STANDARD MEASURED"
+      - q: "CALC:FORM:STANdard:TYPE THRU"
+        r: "THRU STANDARD DEFINED"
+      - q: "CALC:FORM:STANdard:MEAS THRU"
+        r: "THRU STANDARD MEASURED"
+      - q: "CALC:FORM:FILE:SAVE 'calibration_data.s2p'"
+        r: "CALIBRATION DATA SAVED"
+      - q: "CALC:FORM:FILE:LOAD 'calibration_data.s2p'"
+        r: "CALIBRATION DATA LOADED"
+    error:
+      error_queue:
+        - q: ':SYST:ERR?'
+          default: '0, No Error'
+          command_error: '1, Command error'
+    properties:
+      voltage:
+        default: 1.0
+        getter:
+          q: ":VOLT:IMM:AMPL?"
+          r: "{:+.8E}"
+        setter:
+          q: ":VOLT:IMM:AMPL {:.3f}"
+        specs:
+          min: 1
+          max: 6
+          type: float
+
+resources:
+  USB::0x1111::0x2222::0x1234::INSTR:
+    device: device 1
+  GPIB::9::INSTR:
+    device: device 2
